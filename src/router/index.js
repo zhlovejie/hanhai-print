@@ -159,6 +159,21 @@ export const constantRoutes = [
     ]
   },
 
+
+  {
+    path: '/print',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Print',
+        component: () => import('@/views/print/PrintPage'),
+        meta: { title: '打印', icon: 'print' }
+      }
+    ]
+  },
+
+  
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
