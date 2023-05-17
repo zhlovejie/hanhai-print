@@ -9,6 +9,9 @@ export default {
         remark: "发证日期",
         val: "",
         type: "date",
+        ext:{
+          cmd:[' LODOP.SET_PRINT_STYLEA(0,"FontSize",7); ']
+        }
       },
 
       {
