@@ -50,11 +50,10 @@
 import { Loading } from "element-ui";
 import PrintInstance from "@/utils/LodopFuncs.js";
 
-
-import Page1BgImg from "@/assets/print-images/1-1.png"
-import Page2BgImg from "@/assets/print-images/1-2.png"
-import Page3BgImg from "@/assets/print-images/1-3.png"
-import Page4BgImg from "@/assets/print-images/1-4.png"
+import Page1BgImg from "@/assets/print-images/1-1.png";
+import Page2BgImg from "@/assets/print-images/1-2.png";
+import Page3BgImg from "@/assets/print-images/1-3.png";
+import Page4BgImg from "@/assets/print-images/1-4.png";
 
 import Page1Data from "./pages/page1";
 import Page2Data from "./pages/page2";
@@ -70,31 +69,31 @@ export default {
           label: "版面一",
           name: "page-1",
           page: Page1Data,
-          img:Page1BgImg
+          img: Page1BgImg,
         },
         {
           label: "版面二",
           name: "page-2",
           page: Page2Data,
-          img:Page2BgImg
+          img: Page2BgImg,
         },
         {
           label: "版面三",
           name: "page-3",
           page: Page3Data,
-          img:Page3BgImg
+          img: Page3BgImg,
         },
         {
           label: "版面四",
           name: "page-4",
           page: Page4Data,
-          img:Page4BgImg
+          img: Page4BgImg,
         },
       ],
       loading: false,
     };
   },
-  mounted() {
+  async mounted() {
     const that = this;
     that.activeName = that.tabList[0].name;
 
@@ -106,13 +105,51 @@ export default {
 
     PrintInstance.loadCLodop();
 
-    window.getLodop = PrintInstance.getLodop
-    window.loadCLodop = PrintInstance.loadCLodop
-    window.CheckIsInstall = PrintInstance.CheckIsInstall
-    setTimeout(function () {
-      console.log(PrintInstance.getLodop());
-      loadingInstance1.close();
-    }, 2000);
+    function checkPrintStatus() {
+      let fnresolve = null;
+      let p = new Promise((resolve) => {
+        fnresolve = resolve;
+      });
+      let timer = null,
+        now = Date.now(),
+        wait = 20;
+
+      let check = () => {
+        timer = setTimeout(function () {
+          console.log("check....");
+          let diff = (Date.now() - now) / 1000 >= wait;
+          if (diff) {
+            clearTimeout(timer);
+            fnresolve("timeout");
+          }
+          if (PrintInstance.isPrintJsLoaded()) {
+            clearTimeout(timer);
+            fnresolve("over");
+          } else {
+            check();
+          }
+        }, 500);
+      };
+
+      check();
+
+      return p;
+    }
+
+    await checkPrintStatus().then((res) => console.log(res));
+    loadingInstance1.close();
+
+    const LODOP = PrintInstance.getLodop();
+    if (!LODOP) {
+      let html = `
+        <div>
+          <p>Web打印服务CLodop未安装启动，点击这里<a style="color:red;font-weight:700;" href='/static/CLodop_Setup_for_Win32NT.zip' target='_self' rel="external nofollow">下载执行安装</a>。</p>
+          <p>若此前已安装过，可<a href='CLodop.protocol:setup' target='_self' style="color:red;font-weight:700;">点这里直接再次启动</a></p>
+          <p>成功后请刷新本页面或重启浏览器。 </p>
+        </div>
+      `;
+      that.$alert(html, "提示", { dangerouslyUseHTMLString: true });
+    }
   },
 
   methods: {
@@ -120,13 +157,13 @@ export default {
       console.log(tab, event);
     },
     handlePrint() {
-      const that = this
+      const that = this;
 
-      let codeStr = ''
-      let code = []
+      let codeStr = "";
+      let code = [];
 
-      let tab = that.tabList.find(tag => tag.name === that.activeName)
-      let pageComponents = tab.page.components
+      let tab = that.tabList.find((tag) => tag.name === that.activeName);
+      let pageComponents = tab.page.components;
       codeStr = `
         LODOP = window.getLodop();
         LODOP.SET_PRINT_MODE("POS_BASEON_PAPER", true);
@@ -141,27 +178,31 @@ export default {
         LODOP.SET_SHOW_MODE("HIDE_PAPER_BOARD", 1);
         LODOP.SET_SHOW_MODE("BKIMG_IN_PREVIEW", 1);
         LODOP.SET_SHOW_MODE("LANGUAGE", 0);
-      `
+      `;
 
-      pageComponents.map(c => {
-        code.push(`LODOP.ADD_PRINT_TEXT(${c.top},${c.left},${c.w},${c.h},"${c.val}");`)
-        if(c.ext && c.ext.cmd && Array.isArray(c.ext.cmd) && c.ext.cmd.length > 0){
-          c.ext.cmd.map(cmdStr => {
-            code.push(cmdStr)
-          })
+      pageComponents.map((c) => {
+        code.push(
+          `LODOP.ADD_PRINT_TEXT(${c.top},${c.left},${c.w},${c.h},"${c.val}");`
+        );
+        if (
+          c.ext &&
+          c.ext.cmd &&
+          Array.isArray(c.ext.cmd) &&
+          c.ext.cmd.length > 0
+        ) {
+          c.ext.cmd.map((cmdStr) => {
+            code.push(cmdStr);
+          });
         }
-      })
+      });
 
-      codeStr += code.join('\n')
+      codeStr += code.join("\n");
 
-      codeStr += ' LODOP.PRINT_SETUP(); '
-
+      codeStr += " LODOP.PRINT_SETUP(); ";
 
       that.$nextTick(() => {
-        eval(codeStr)
-      })
-
-
+        eval(codeStr);
+      });
     },
   },
 };
