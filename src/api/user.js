@@ -21,3 +21,12 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function userEdit(data) {
+  return request({
+    url: '/sys/user/edit',
+    method: 'post',
+    data
+  })
+}
+
