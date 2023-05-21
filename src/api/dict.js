@@ -26,7 +26,7 @@ export function dictEdit(data) {
 
 export function dictDel(id) {
   return request({
-    url: `/sys/dict/edit/${id}`,
+    url: `/sys/dict/del/${id}`,
     method: 'post'
   })
 }
