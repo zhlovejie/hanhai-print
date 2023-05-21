@@ -1,5 +1,18 @@
 <template>
   <div class="print-wrapper">
+    <div class="tips" >
+      <el-alert
+        style="margin-bottom:20px;"
+        title="使用说明"
+        type="info"
+        show-icon>
+        <div >
+          <p>1.手动输入方式，点击输入框后输入数据即可。</p>
+          <p>2.选择数据方式，双击输入框后弹出数据选择器，选择数据即可。</p>
+        </div>
+      </el-alert>
+    </div>
+
     <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
       <el-tab-pane
         :label="tab.label"
@@ -20,7 +33,9 @@
                 top: `${c.top}px`,
                 left: `${c.left}px`,
               }"
+              @dblclick.native="handleSelectValue($event, c)"
             />
+            
 
             <el-input
               v-else
@@ -34,15 +49,19 @@
                 top: `${c.top}px`,
                 left: `${c.left}px`,
               }"
+              @dblclick.native="handleSelectValue($event, c)"
             />
           </div>
         </div>
       </el-tab-pane>
     </el-tabs>
 
+
     <div class="btn-wrapper">
       <el-button type="primary" @click="handlePrint">打印此页</el-button>
     </div>
+
+    <DictSelect ref="dictSelect"  @select="handleDictSelect"/>
   </div>
 </template>
 
@@ -59,34 +78,64 @@ import Page1Data from "./pages/page1";
 import Page2Data from "./pages/page2";
 import Page3Data from "./pages/page3";
 import Page4Data from "./pages/page4";
+
+import DictSelect from "@/components/common/DictSelect";
+
+import {uuid} from '@/utils/index'
 export default {
-  name: "",
+  name: "print-page",
+  components: { DictSelect },
   data() {
+    let _Page1Data = {...Page1Data}
+    _Page1Data.components = _Page1Data.components.map(c => {
+      c.key = uuid(32)
+      return c
+    })
+
+    let _Page2Data = {...Page2Data}
+    _Page2Data.components = _Page2Data.components.map(c => {
+      c.key = uuid(32)
+      return c
+    })
+
+    let _Page3Data = {...Page3Data}
+    _Page3Data.components = _Page3Data.components.map(c => {
+      c.key = uuid(32)
+      return c
+    })
+
+    let _Page4Data = {...Page4Data}
+    _Page4Data.components = _Page4Data.components.map(c => {
+      c.key = uuid(32)
+      return c
+    })
+
+
     return {
       activeName: "",
       tabList: [
         {
           label: "版面一",
           name: "page-1",
-          page: Page1Data,
+          page: _Page1Data,
           img: Page1BgImg,
         },
         {
           label: "版面二",
           name: "page-2",
-          page: Page2Data,
+          page: _Page2Data,
           img: Page2BgImg,
         },
         {
           label: "版面三",
           name: "page-3",
-          page: Page3Data,
+          page: _Page3Data,
           img: Page3BgImg,
         },
         {
           label: "版面四",
           name: "page-4",
-          page: Page4Data,
+          page: _Page4Data,
           img: Page4BgImg,
         },
       ],
@@ -204,6 +253,21 @@ export default {
         eval(codeStr);
       });
     },
+    handleSelectValue(event, c) {
+      const that = this;
+      that.$refs.dictSelect.query({ target: c });
+    },
+
+    handleDictSelect({input,output}){
+      // let target = input.target
+      // let tab = that.tabList.find((tag) => tag.name === that.activeName);
+      // let pageComponents = tab.page.components;
+
+      // let component = pageComponents.find(c => c.key === target.key)
+      // component.val = output
+
+      input.target.val = output
+    }
   },
 };
 </script>

@@ -115,3 +115,17 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+/**
+ * 生成唯一uuid传，默认8位
+ * @param {*} n
+ * @returns
+ */
+export function uuid(n = 8) {
+  let str = "";
+  while (str.length < n) {
+    str += `${Math.random().toString(32).slice(-8)}`;
+  }
+
+  return str.slice(0, n);
+}
