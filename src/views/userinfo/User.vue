@@ -11,15 +11,27 @@
         <el-input v-model="ruleForm.username" :disabled="true"></el-input>
       </el-form-item>
       <el-form-item label="用户姓名" prop="realname">
-        <el-input v-model="ruleForm.realname"></el-input>
+        <el-input
+          v-model="ruleForm.realname"
+          maxlength="50"
+          show-word-limit
+        ></el-input>
       </el-form-item>
 
       <el-form-item label="手机号码" prop="phone">
-        <el-input v-model="ruleForm.phone"></el-input>
+        <el-input
+          v-model="ruleForm.phone"
+          maxlength="11"
+          show-word-limit
+        ></el-input>
       </el-form-item>
 
       <el-form-item label="邮箱" prop="email">
-        <el-input v-model="ruleForm.email"></el-input>
+        <el-input
+          v-model="ruleForm.email"
+          maxlength="80"
+          show-word-limit
+        ></el-input>
       </el-form-item>
 
       <el-form-item label="性别" prop="sex">
@@ -40,7 +52,7 @@
         ></el-date-picker>
       </el-form-item>
 
-      <el-form-item label="头像" >
+      <el-form-item label="头像">
         <UploadImage v-model="ruleForm.avatar"></UploadImage>
       </el-form-item>
 
@@ -63,9 +75,31 @@ export default {
     UploadImage,
   },
   data() {
+    let validatePhone = (rule, value, callback) => {
+      const myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+      if (!value) {
+        callback(new Error("请输入手机号"));
+      } else if (!myreg.test(value)) {
+        callback(new Error("请输入正确的手机号"));
+      } else {
+        callback();
+      }
+    };
     return {
       ruleForm: {},
-      rules: {},
+      rules: {
+        realname: [
+          { required: true, message: "请输入用户姓名", trigger: "blur" },
+          {
+            min: 3,
+            max: 5,
+            message: "长度在 3 到 100 个字符",
+            trigger: "blur",
+          },
+        ],
+
+        phone: [{ validator: checkAge, trigger: "blur" }],
+      },
     };
   },
   created() {
@@ -83,11 +117,10 @@ export default {
       const that = this;
       that.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
           userEdit(that.ruleForm)
             .then((res) => {
-              if (res.success) {
-                that.$message.success(res.message);
+              if (+res.code === 200) {
+                that.$message.success("操作成功");
                 that.fetchUserInfo();
               }
             })

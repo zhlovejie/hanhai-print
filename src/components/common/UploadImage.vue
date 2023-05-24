@@ -41,7 +41,7 @@
     methods: {
       handleAvatarSuccess(res, file) {
         // this.imageUrl = URL.createObjectURL(file.raw);
-        if(res.success){
+        if(+res.code === 200){
             this.imageUrl = res.result;
             this.$emit("change", this.imageUrl);
         }else{

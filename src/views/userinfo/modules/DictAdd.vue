@@ -14,13 +14,13 @@
       >
         <el-input v-model="form.dict_name" placeholder="字典名称"></el-input>
       </el-form-item>
-      <el-form-item
+      <!-- <el-form-item
         label="字典编码"
         :label-width="formLabelWidth"
         prop="dict_code"
       >
         <el-input v-model="form.dict_code" placeholder="字典编码"></el-input>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="字典备注" :label-width="formLabelWidth">
         <el-input
           type="textarea"
@@ -57,15 +57,15 @@ export default {
             trigger: "blur",
           },
         ],
-        dict_code: [
-          { required: true, message: "请输入字典编码", trigger: "blur" },
-          {
-            min: 1,
-            max: 100,
-            message: "长度在 1 到 100 个字符",
-            trigger: "blur",
-          },
-        ],
+        // dict_code: [
+        //   { required: true, message: "请输入字典编码", trigger: "blur" },
+        //   {
+        //     min: 1,
+        //     max: 100,
+        //     message: "长度在 1 到 100 个字符",
+        //     trigger: "blur",
+        //   },
+        // ],
       },
       type: "add",
       record: {},
