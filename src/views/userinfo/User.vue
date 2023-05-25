@@ -98,7 +98,7 @@ export default {
           },
         ],
 
-        phone: [{ validator: checkAge, trigger: "blur" }],
+        phone: [{ validator: validatePhone, trigger: "blur" }],
       },
     };
   },

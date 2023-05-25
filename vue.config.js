@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
+const CompressionPlugin = require("compression-webpack-plugin")
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -24,7 +25,7 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/',
+  publicPath: './',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV === 'development',
@@ -121,5 +122,14 @@ module.exports = {
           config.optimization.runtimeChunk('single')
         }
       )
+
+    //生产环境，开启js\css压缩
+    if (process.env.NODE_ENV === 'production') {
+      config.plugin('compressionPlugin').use(new CompressionPlugin({
+        test: /\.(js|css|less)$/, // 匹配文件名
+        threshold: 10240, // 对超过10k的数据压缩
+        deleteOriginalAssets: false // 不删除源文件
+      }))
+    }
   }
 }
