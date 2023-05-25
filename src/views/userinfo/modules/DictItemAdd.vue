@@ -16,17 +16,9 @@
         <el-input v-model="form.item_text" placeholder="字典项名称"></el-input>
       </el-form-item>
       <el-form-item
-        label="字典项编码"
-        :label-width="formLabelWidth"
-        prop="item_value"
-      >
-        <el-input v-model="form.item_value" placeholder="字典项编码"></el-input>
-      </el-form-item>
-      <el-form-item
-        label="字典项序号"
+        label="字典排序号"
         :label-width="formLabelWidth"
         prop="sort_order"
-        required
       >
         <el-input v-model="form.sort_order" placeholder="填写数字"></el-input>
       </el-form-item>
@@ -38,7 +30,6 @@
           placeholder="字典项备注"
         ></el-input>
       </el-form-item>
-
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button size="small" @click="handleCancel">取 消</el-button>
@@ -77,16 +68,10 @@ export default {
             trigger: "blur",
           },
         ],
-        item_value: [
-          { required: true, message: "请输入字典项编码", trigger: "blur" },
-          {
-            min: 1,
-            max: 100,
-            message: "长度在 1 到 100 个字符",
-            trigger: "blur",
-          },
+        sort_order: [
+          { required: true, message: "请输入字典排序号", trigger: "blur" },
+          { validator: validateSortOrder, trigger: "blur" },
         ],
-        sort_order: [{ validator: validateSortOrder, trigger: "blur" }],
       },
       type: "add",
       record: {},

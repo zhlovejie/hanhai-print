@@ -14,13 +14,6 @@
             clearable
           ></el-input>
         </el-form-item>
-        <el-form-item label="编码">
-          <el-input
-            v-model="searchParams.item_value"
-            placeholder="编码模糊查询"
-            clearable
-          ></el-input>
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">查询</el-button>
         </el-form-item>
@@ -42,10 +35,12 @@
         style="width: 100%"
         v-loading="loading"
       >
-        <el-table-column prop="sort_order" label="序号"> </el-table-column>
+        <el-table-column label="序号">
+          <template slot-scope="scope">{{ scope.$index + 1 }}</template>
+        </el-table-column>
         <el-table-column prop="item_text" label="名称"> </el-table-column>
-        <el-table-column prop="item_text" label="编码"> </el-table-column>
         <el-table-column prop="description" label="备注"> </el-table-column>
+        <el-table-column prop="sort_order" label="排序"> </el-table-column>
         <el-table-column label="操作" width="160">
           <template slot-scope="scope">
             <el-button

@@ -14,13 +14,6 @@
             clearable
           ></el-input>
         </el-form-item>
-        <el-form-item label="字典编码">
-          <el-input
-            v-model="searchParams.dict_code"
-            placeholder="字典编码模糊查询"
-            clearable
-          ></el-input>
-        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handleSearch">查询</el-button>
         </el-form-item>
@@ -46,7 +39,6 @@
           <template slot-scope="scope">{{ scope.$index + 1 }}</template>
         </el-table-column>
         <el-table-column prop="dict_name" label="字典名称"> </el-table-column>
-        <el-table-column prop="dict_code" label="字典编码"> </el-table-column>
         <el-table-column prop="description" label="字典备注"> </el-table-column>
         <el-table-column label="操作" width="250">
           <template slot-scope="scope">
