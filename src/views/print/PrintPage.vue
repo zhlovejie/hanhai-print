@@ -21,7 +21,7 @@
         :key="tab.name"
       >
         <div :class="{ 'print-page': true, [tab.name]: true }">
-          <div class="" v-for="(c, idx) in tab.page.components" :key="idx">
+          <div class="" v-for="c in tab.page.components" :key="c.key">
             <el-input
               v-if="c.h <= 20"
               size="mini"
@@ -61,7 +61,9 @@
       <el-button type="primary" @click="handlePrint">打印此页</el-button>
     </div>
 
-    <DictSelect ref="dictSelect"  @select="handleDictSelect"/>
+    <DictSelect ref="dictSelect" @select="handleDictSelect"/>
+
+    <DateSelect ref="dateSelect" @select="handleDateSelect"/>
   </div>
 </template>
 
@@ -69,7 +71,7 @@
 import { Loading } from "element-ui";
 import PrintInstance from "@/utils/LodopFuncs.js";
 
-import Page1BgImg from "@/assets/print-images/1-1.png";
+import Page1BgImg from "@/assets/print-images/1-1-new.png";
 import Page2BgImg from "@/assets/print-images/1-2.png";
 import Page3BgImg from "@/assets/print-images/1-3.png";
 import Page4BgImg from "@/assets/print-images/1-4.png";
@@ -80,11 +82,12 @@ import Page3Data from "./pages/page3";
 import Page4Data from "./pages/page4";
 
 import DictSelect from "@/components/common/DictSelect";
+import DateSelect from "@/components/common/DateSelect";
 
 import {uuid} from '@/utils/index'
 export default {
   name: "print-page",
-  components: { DictSelect },
+  components: { DictSelect ,DateSelect},
   data() {
     let _Page1Data = {...Page1Data}
     _Page1Data.components = _Page1Data.components.map(c => {
@@ -267,6 +270,9 @@ export default {
       // component.val = output
 
       input.target.val = output
+    },
+    handleDateSelect({input,output}){
+      
     }
   },
 };
@@ -302,7 +308,7 @@ export default {
   }
 
   .page-1 {
-    background: #fff url("~@/assets/print-images/1-1.png") no-repeat center
+    background: #fff url("~@/assets/print-images/1-1-new.png") no-repeat center
       center;
   }
   .page-2 {
