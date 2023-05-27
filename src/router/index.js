@@ -50,7 +50,7 @@ export const constantRoutes = [
     children: [
       {
         path: "dashboard",
-        name: "欢迎页",
+        name: "dashboard",
         component: () => import("@/views/dashboard/index"),
         meta: { title: "欢迎页", icon: "dashboard" },
       },
@@ -164,9 +164,8 @@ export const constantRoutes = [
   {
     path: "/admin/manage",
     component: Layout,
-    redirect: "/example/table",
-    name: "Example",
-    meta: { title: "系统管理", icon: "el-icon-setting" },
+    name: "admin-manage",
+    meta: { title: "系统管理", icon: "el-icon-setting" ,},
     children: [
       {
         path: "user",

@@ -28,10 +28,15 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      'role'
     ]),
     routes() {
-      return this.$router.options.routes
+      let routes = this.$router.options.routes
+      if([3,4].includes(this.role)){
+        routes = routes.filter(r => !String(r.name).startsWith('admin'))
+      }
+      return routes
     },
     activeMenu() {
       const route = this.$route

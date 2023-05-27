@@ -63,7 +63,7 @@
 
     <DictSelect ref="dictSelect" @select="handleDictSelect"/>
 
-    <DateSelect ref="dateSelect" @select="handleDateSelect"/>
+    <!-- <DateSelect ref="dateSelect" @select="handleDateSelect"/> -->
   </div>
 </template>
 
@@ -82,12 +82,12 @@ import Page3Data from "./pages/page3";
 import Page4Data from "./pages/page4";
 
 import DictSelect from "@/components/common/DictSelect";
-import DateSelect from "@/components/common/DateSelect";
+// import DateSelect from "@/components/common/DateSelect";
 
 import {uuid} from '@/utils/index'
 export default {
   name: "print-page",
-  components: { DictSelect ,DateSelect},
+  components: { DictSelect },
   data() {
     let _Page1Data = {...Page1Data}
     _Page1Data.components = _Page1Data.components.map(c => {

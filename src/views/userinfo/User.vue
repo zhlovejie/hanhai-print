@@ -92,7 +92,7 @@ export default {
           { required: true, message: "请输入用户姓名", trigger: "blur" },
           {
             min: 3,
-            max: 5,
+            max: 100,
             message: "长度在 3 到 100 个字符",
             trigger: "blur",
           },

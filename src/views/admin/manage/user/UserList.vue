@@ -14,6 +14,34 @@
             clearable
           ></el-input>
         </el-form-item>
+
+        <el-form-item label="账号状态">
+          <el-select v-model="searchParams.status" placeholder="请选择账号状态">
+            <el-option
+              v-for="item in statusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="删除状态">
+          <el-select
+            v-model="searchParams.del_flag"
+            placeholder="请选择删除状态"
+          >
+            <el-option
+              v-for="item in delFlagOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" @click="handleSearch">查询</el-button>
         </el-form-item>
@@ -84,6 +112,13 @@
               @click="handleAction('edit', scope.row)"
               >编辑</el-button
             >
+
+            <el-button
+              size="mini"
+              type="primary"
+              @click="handleAction('password', scope.row)"
+              >修改密码</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -104,17 +139,19 @@
     </div>
 
     <UserAdd ref="refUserAdd" @ok="handleUserAddOk" />
+    <ResetPassword ref="resetPassword" />
   </div>
 </template>
 
 <script>
 import { userPageList } from "@/api/user";
 import UserAdd from "./UserAdd.vue";
-
+import ResetPassword from "@/components/common/ResetPasswordSys.vue";
 export default {
-  name: "my-data",
+  name: "user-list",
   components: {
     UserAdd,
+    ResetPassword,
   },
   data() {
     return {
@@ -127,10 +164,26 @@ export default {
         total: 0,
       },
       tableData: [],
-
-      drawer: false,
-      drawerDirection: "rtl",
-      drawerTitle: "",
+      statusOptions: [
+        {
+          value: "1",
+          label: "正常",
+        },
+        {
+          value: "2",
+          label: "冻结",
+        },
+      ],
+      delFlagOptions: [
+        {
+          value: "0",
+          label: "正常",
+        },
+        {
+          value: "1",
+          label: "删除",
+        },
+      ],
     };
   },
   created() {
@@ -192,7 +245,10 @@ export default {
     handleAction(type, record) {
       const that = this;
       console.log(arguments);
-      if (type === "del") {
+      if (type === "password") {
+        that.$refs.resetPassword.query(record);
+        return;
+      } else if (type === "del") {
         that
           .$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
             confirmButtonText: "确定",
@@ -229,7 +285,7 @@ export default {
             });
           });
       } else {
-        that.$refs.refUserAdd.query(type, record);
+        that.$refs.refUserAdd.query(type, Object.assign({}, record));
       }
     },
     handleUserAddOk() {

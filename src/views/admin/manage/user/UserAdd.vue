@@ -137,9 +137,9 @@ export default {
         username: [
           { required: true, message: "请输入账号", trigger: "blur" },
           {
-            min: 6,
+            min: 1,
             max: 100,
-            message: "长度在 6 到 100 个字符",
+            message: "长度在 1 到 100 个字符",
             trigger: "blur",
           },
         ],
@@ -184,9 +184,7 @@ export default {
       const that = this;
       that.type = type;
       that.record = record;
-      if(!that.isAdd){
-        that.ruleForm = record;
-      }
+      that.ruleForm = record;
       that.visible = true;
       that.loading = false;
     },

@@ -45,3 +45,11 @@ export function userPageList(params) {
     params
   });
 }
+
+export function usetResetPassword(data) {
+  return request({
+    url: "/sys/user/resetpassword",
+    method: "post",
+    data
+  });
+}
