@@ -25,12 +25,12 @@ export default {
   position: relative;
   overflow: hidden;
 
-  background-color: #fdfcfc;
+  /* background-color: #fdfcfc;
     background-image: url(../../assets/img/page-bg..png),linear-gradient(180deg,#f3f3f5,#f1f8fe);
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-position: bottom;
-    background-size: cover;
+    background-size: cover; */
 
 }
 .fixed-header+.app-main {

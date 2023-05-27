@@ -173,13 +173,7 @@ export const constantRoutes = [
         name: "admin-manage-user",
         component: () => import("@/views/admin/manage/user/UserList"),
         meta: { title: "用户管理", icon: "el-icon-user" },
-      },
-      {
-        path: "dict",
-        name: "admin-manage-dict",
-        component: () => import("@/views/admin/manage/dict/DictList"),
-        meta: { title: "字典管理", icon: "el-icon-notebook-1" },
-      },
+      }
     ],
   },
 
@@ -216,6 +210,18 @@ export const constantRoutes = [
         name: "Print",
         component: () => import("@/views/print/PrintPage"),
         meta: { title: "打印证书", icon: "el-icon-printer" },
+      },
+    ],
+  },
+  {
+    path: "/printlog",
+    component: Layout,
+    children: [
+      {
+        path: "index",
+        name: "Print",
+        component: () => import("@/views/print/PrintPageLog"),
+        meta: { title: "历史打印记录", icon: "el-icon-time" },
       },
     ],
   },
