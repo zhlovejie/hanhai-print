@@ -46,9 +46,18 @@ export function userPageList(params) {
   });
 }
 
-export function usetResetPassword(data) {
+export function userResetPassword(data) {
   return request({
     url: "/sys/user/resetpassword",
+    method: "post",
+    data
+  });
+}
+
+
+export function udpateTrialUsed(data) {
+  return request({
+    url: "/sys/user/udpateTrialUsed",
     method: "post",
     data
   });

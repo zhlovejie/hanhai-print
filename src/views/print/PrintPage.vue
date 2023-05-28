@@ -1,12 +1,13 @@
 <template>
   <div class="print-wrapper">
-    <div class="tips" >
+    <div class="tips">
       <el-alert
-        style="margin-bottom:20px;"
+        style="margin-bottom: 20px"
         title="使用说明"
         type="info"
-        show-icon>
-        <div >
+        show-icon
+      >
+        <div>
           <p>1.手动输入方式，点击输入框后输入数据即可。</p>
           <p>2.选择数据方式，双击输入框后弹出数据选择器，选择数据即可。</p>
         </div>
@@ -35,7 +36,6 @@
               }"
               @dblclick.native="handleSelectValue($event, c)"
             />
-            
 
             <el-input
               v-else
@@ -56,12 +56,11 @@
       </el-tab-pane>
     </el-tabs>
 
-
     <div class="btn-wrapper">
       <el-button type="primary" @click="handlePrint">打印此页</el-button>
     </div>
 
-    <DictSelect ref="dictSelect" @select="handleDictSelect"/>
+    <DictSelect ref="dictSelect" @select="handleDictSelect" />
 
     <!-- <DateSelect ref="dateSelect" @select="handleDateSelect"/> -->
   </div>
@@ -84,35 +83,37 @@ import Page4Data from "./pages/page4";
 import DictSelect from "@/components/common/DictSelect";
 // import DateSelect from "@/components/common/DateSelect";
 
-import {uuid} from '@/utils/index'
+import { uuid } from "@/utils/index";
+import { udpateTrialUsed } from "@/api/user";
+import { printLogAdd } from "@/api/print";
+
 export default {
   name: "print-page",
   components: { DictSelect },
   data() {
-    let _Page1Data = {...Page1Data}
-    _Page1Data.components = _Page1Data.components.map(c => {
-      c.key = uuid(32)
-      return c
-    })
+    let _Page1Data = { ...Page1Data };
+    _Page1Data.components = _Page1Data.components.map((c) => {
+      c.key = uuid(32);
+      return c;
+    });
 
-    let _Page2Data = {...Page2Data}
-    _Page2Data.components = _Page2Data.components.map(c => {
-      c.key = uuid(32)
-      return c
-    })
+    let _Page2Data = { ...Page2Data };
+    _Page2Data.components = _Page2Data.components.map((c) => {
+      c.key = uuid(32);
+      return c;
+    });
 
-    let _Page3Data = {...Page3Data}
-    _Page3Data.components = _Page3Data.components.map(c => {
-      c.key = uuid(32)
-      return c
-    })
+    let _Page3Data = { ...Page3Data };
+    _Page3Data.components = _Page3Data.components.map((c) => {
+      c.key = uuid(32);
+      return c;
+    });
 
-    let _Page4Data = {...Page4Data}
-    _Page4Data.components = _Page4Data.components.map(c => {
-      c.key = uuid(32)
-      return c
-    })
-
+    let _Page4Data = { ...Page4Data };
+    _Page4Data.components = _Page4Data.components.map((c) => {
+      c.key = uuid(32);
+      return c;
+    });
 
     return {
       activeName: "",
@@ -202,9 +203,56 @@ export default {
       `;
       that.$alert(html, "提示", { dangerouslyUseHTMLString: true });
     }
+
+    // LODOP.SET_PRINT_MODE("CATCH_PRINT_STATUS",true);
+    // LODOP.On_Return=function(TaskID2,value1){
+    //   console.log(arguments)
+    // };
+
+    window.__LODOP_PRINT_STATUS = function (TaskID, value) {
+      console.log(arguments);
+      udpateTrialUsed();
+      that.addPrintLog();
+
+      // setTimeout(() => {
+      //   LODOP.GET_VALUE("PRINT_STATUS_EXIST",value)
+      // }, 5000);
+
+      // let c = 0,t = null
+      // let check = function(){
+      //   let val = LODOP.GET_VALUE("PRINT_STATUS_OK",value)
+      //   let val2 = LODOP.GET_VALUE("PRINT_STATUS_EXIST",value)
+      //   console.log(`PRINT_STATUS_OK:${val} PRINT_STATUS_EXIST:${val2}`)
+      //   if (val) {
+      //     clearInterval(t);
+      //     c=0;
+      //     console.log("打印成功！")
+      //   }if ((!val2)&&(c>0)) {
+      //     clearInterval(t);
+      //     c=0;
+      //     console.log("打印任务被删除！");
+      //   } else if (c>30){
+      //     clearInterval(t);
+      //     c=0;
+      //     console.log("打印超过30秒没捕获到成功状态！");
+      //   };
+      // }
+
+      // t = setInterval(() => {
+      //   c++
+      //   check()
+      // }, 1000);
+    };
   },
 
   methods: {
+    addPrintLog() {
+      let tabList = [...this.tabList];
+      let target = tabList.find((tab) => tab.name === this.activeName);
+      if (target) {
+        printLogAdd({ print_json: JSON.stringify(target) });
+      }
+    },
     handleClick(tab, event) {
       console.log(tab, event);
     },
@@ -250,7 +298,23 @@ export default {
 
       codeStr += code.join("\n");
 
-      codeStr += " LODOP.PRINT_SETUP(); ";
+      codeStr += `LODOP.SET_PRINT_MODE("CATCH_PRINT_STATUS",true);`;
+
+      codeStr += `
+
+        LODOP.On_Return_Remain=true;
+        if (LODOP.CVERSION) {
+          LODOP.On_Return = function(TaskID,Value){
+            window.__LODOP_PRINT_STATUS(TaskID,Value)
+          };
+          LODOP.PRINT_SETUP();;
+        } else {
+          window.__LODOP_PRINT_STATUS(LODOP.PRINT_SETUP())
+        };
+
+      `;
+
+      // codeStr += " LODOP.PRINT_SETUP(); ";
 
       that.$nextTick(() => {
         eval(codeStr);
@@ -261,7 +325,7 @@ export default {
       that.$refs.dictSelect.query({ target: c });
     },
 
-    handleDictSelect({input,output}){
+    handleDictSelect({ input, output }) {
       // let target = input.target
       // let tab = that.tabList.find((tag) => tag.name === that.activeName);
       // let pageComponents = tab.page.components;
@@ -269,11 +333,9 @@ export default {
       // let component = pageComponents.find(c => c.key === target.key)
       // component.val = output
 
-      input.target.val = output
+      input.target.val = output;
     },
-    handleDateSelect({input,output}){
-      
-    }
+    handleDateSelect({ input, output }) {},
   },
 };
 </script>

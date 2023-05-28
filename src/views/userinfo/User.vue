@@ -7,6 +7,18 @@
       label-width="100px"
       class="demo-ruleForm"
     >
+
+      <el-alert
+        v-if="+ruleForm.user_identity === 4"
+        style="margin-bottom:20px;"
+        title="提示"
+        type="warning"
+        show-icon>
+        <div >
+          <p>当前账号为试用客户，请联系管理员提升为正式客户！</p>
+        </div>
+      </el-alert>
+
       <el-form-item label="用户账号" prop="username">
         <el-input v-model="ruleForm.username" :disabled="true"></el-input>
       </el-form-item>

@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { usetResetPassword } from "@/api/user";
+import { userResetPassword } from "@/api/user";
 export default {
   name: "user-reset-password-sys",
   data() {
@@ -72,7 +72,7 @@ export default {
         if (valid) {
           let params = { ...that.ruleForm, userid: that.user.id };
           that.loading = true;
-          usetResetPassword(params)
+          userResetPassword(params)
             .then((res) => {
               if (+res.code === 200) {
                 that.$message.info(res.message);

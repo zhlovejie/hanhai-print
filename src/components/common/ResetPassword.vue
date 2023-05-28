@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { usetResetPassword } from "@/api/user";
+import { userResetPassword } from "@/api/user";
 import { mapGetters } from "vuex";
 export default {
   name: "user-reset-password",
@@ -89,7 +89,7 @@ export default {
         if (valid) {
           let params = { ...that.ruleForm };
           that.loading = true;
-          usetResetPassword(params)
+          userResetPassword(params)
             .then((res) => {
               if (+res.code === 200) {
                 that.$message.info(res.message);
