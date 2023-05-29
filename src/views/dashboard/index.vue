@@ -48,8 +48,8 @@ export default {
       position: fixed;
       right: 50px;
       bottom: 100px;
-      color: #fff;
-      animation: lock-screen-datetime-show 3s linear;
+      color: #333;
+      animation: lock-screen-datetime-show 2s linear;
       .custom-lock-screen-time {
         font-size: 160px;
       }

@@ -62,3 +62,11 @@ export function udpateTrialUsed(data) {
     data
   });
 }
+
+export function checkTrial(data) {
+  return request({
+    url: "/sys/user/checkTrial",
+    method: "post",
+    data
+  });
+}

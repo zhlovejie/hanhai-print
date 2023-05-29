@@ -84,7 +84,7 @@ import DictSelect from "@/components/common/DictSelect";
 // import DateSelect from "@/components/common/DateSelect";
 
 import { uuid } from "@/utils/index";
-import { udpateTrialUsed } from "@/api/user";
+import { udpateTrialUsed, checkTrial } from "@/api/user";
 import { printLogAdd } from "@/api/print";
 
 export default {
@@ -148,6 +148,18 @@ export default {
   },
   async mounted() {
     const that = this;
+
+    let isTrialEnd = await checkTrial().then((res) => res.result.end);
+    if (+isTrialEnd === 1) {
+      that.$message.info(
+        `您的试用次数已经使用完了，请联系管理员延长试用或升级为正式客户！`
+      );
+      setTimeout(function () {
+        that.$router.push({ name: "dashboard" });
+      }, 5000);
+      return;
+    }
+
     that.activeName = that.tabList[0].name;
 
     let loadingInstance1 = Loading.service({
