@@ -165,14 +165,14 @@ export const constantRoutes = [
     path: "/admin/manage",
     component: Layout,
     name: "admin-manage",
-    meta: { title: "系统管理", icon: "el-icon-setting" ,},
+    meta: { title: "系统管理", icon: "el-icon-setting" },
     children: [
       {
         path: "user",
         name: "admin-manage-user",
         component: () => import("@/views/admin/manage/user/UserList"),
-        meta: { title: "用户管理", icon: "el-icon-user" },
-      }
+        meta: { title: "用户管理", icon: "el-icon-user-solid" },
+      },
     ],
   },
 
@@ -182,7 +182,7 @@ export const constantRoutes = [
     children: [
       {
         path: "index",
-        name: "Print",
+        name: "account-user-info",
         component: () => import("@/views/userinfo/User"),
         meta: { title: "账号信息", icon: "el-icon-user" },
       },
@@ -194,9 +194,9 @@ export const constantRoutes = [
     children: [
       {
         path: "index",
-        name: "Print",
+        name: "mydata",
         component: () => import("@/views/userinfo/MyData"),
-        meta: { title: "数据维护", icon: "el-icon-setting" },
+        meta: { title: "我的数据", icon: "el-icon-coin" },
       },
     ],
   },
@@ -206,7 +206,7 @@ export const constantRoutes = [
     children: [
       {
         path: "index",
-        name: "Print",
+        name: "print",
         component: () => import("@/views/print/PrintPage"),
         meta: { title: "打印证书", icon: "el-icon-printer" },
       },
@@ -218,9 +218,9 @@ export const constantRoutes = [
     children: [
       {
         path: "index",
-        name: "Print",
+        name: "printlog",
         component: () => import("@/views/print/PrintPageLog"),
-        meta: { title: "历史打印记录", icon: "el-icon-time" },
+        meta: { title: "打印记录", icon: "el-icon-time" },
       },
     ],
   },

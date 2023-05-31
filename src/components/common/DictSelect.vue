@@ -86,7 +86,11 @@ export default {
       return getDictPageList({
         page_no: 1,
         page_size: 100,
-      }).then((res) => res.result.records || []);
+      })
+        .then((res) => res.result.records || [])
+        .catch((err) => {
+          console.log(err);
+        });
     },
     fetchDictItem(dict_id) {
       const that = this;
@@ -97,6 +101,9 @@ export default {
         page_size: 100,
       })
         .then((res) => res.result.records || [])
+        .catch((err) => {
+          console.log(err);
+        })
         .finally(() => {
           that.dictLoading = false;
         });

@@ -7,14 +7,14 @@
       label-width="100px"
       class="demo-ruleForm"
     >
-
       <el-alert
         v-if="+ruleForm.user_identity === 4"
-        style="margin-bottom:20px;"
+        style="margin-bottom: 20px"
         title="提示"
         type="warning"
-        show-icon>
-        <div >
+        show-icon
+      >
+        <div>
           <p>当前账号为试用客户，请联系管理员提升为正式客户！</p>
         </div>
       </el-alert>
@@ -119,11 +119,15 @@ export default {
   },
   methods: {
     fetchUserInfo() {
-      getInfo().then((res) => {
-        let result = res.result;
-        result.birthday = new Date(result.birthday).getTime();
-        this.ruleForm = result;
-      });
+      getInfo()
+        .then((res) => {
+          let result = res.result;
+          result.birthday = new Date(result.birthday).getTime();
+          this.ruleForm = result;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     submitForm(formName) {
       const that = this;

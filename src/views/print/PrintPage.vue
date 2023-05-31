@@ -116,7 +116,7 @@ export default {
     });
 
     return {
-      activeName: "",
+      activeName: "page-1",
       tabList: [
         {
           label: "版面一",
@@ -149,7 +149,11 @@ export default {
   async mounted() {
     const that = this;
 
-    let isTrialEnd = await checkTrial().then((res) => res.result.end);
+    let isTrialEnd = await checkTrial()
+      .then((res) => res.result.end)
+      .catch((err) => {
+        console.log(err);
+      });
     if (+isTrialEnd === 1) {
       that.$message.info(
         `您的试用次数已经使用完了，请联系管理员延长试用或升级为正式客户！`
@@ -223,7 +227,11 @@ export default {
 
     window.__LODOP_PRINT_STATUS = function (TaskID, value) {
       console.log(arguments);
-      udpateTrialUsed();
+      udpateTrialUsed()
+        .then()
+        .catch((err) => {
+          console.log(err);
+        });
       that.addPrintLog();
 
       // setTimeout(() => {
@@ -262,7 +270,11 @@ export default {
       let tabList = [...this.tabList];
       let target = tabList.find((tab) => tab.name === this.activeName);
       if (target) {
-        printLogAdd({ print_json: JSON.stringify(target) });
+        printLogAdd({ print_json: JSON.stringify(target) })
+          .then()
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
     handleClick(tab, event) {
