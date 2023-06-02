@@ -15,7 +15,7 @@
         show-icon
       >
         <div>
-          <p>当前账号为试用客户，请联系管理员提升为正式客户！</p>
+          <p>当前账号为试用客户，请联系管理员升级为正式客户！</p>
         </div>
       </el-alert>
 
@@ -87,7 +87,7 @@ export default {
     UploadImage,
   },
   data() {
-    let validatePhone = (rule, value, callback) => {
+    const validatePhone = (rule, value, callback) => {
       const myreg = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
       if (!value) {
         callback(new Error("请输入手机号"));
@@ -121,7 +121,7 @@ export default {
     fetchUserInfo() {
       getInfo()
         .then((res) => {
-          let result = res.result;
+          const result = res.result;
           result.birthday = new Date(result.birthday).getTime();
           this.ruleForm = result;
         })

@@ -212,18 +212,18 @@ export const constantRoutes = [
       },
     ],
   },
-  {
-    path: "/printlog",
-    component: Layout,
-    children: [
-      {
-        path: "index",
-        name: "printlog",
-        component: () => import("@/views/print/PrintPageLog"),
-        meta: { title: "打印记录", icon: "el-icon-time" },
-      },
-    ],
-  },
+  // {
+  //   path: "/printlog",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       name: "printlog",
+  //       component: () => import("@/views/print/PrintPageLog"),
+  //       meta: { title: "打印记录", icon: "el-icon-time" },
+  //     },
+  //   ],
+  // },
 
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true },

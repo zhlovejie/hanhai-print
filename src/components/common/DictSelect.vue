@@ -7,7 +7,7 @@
     v-loading="dictLoading"
   >
     <div class="dict-select-wrapper">
-      <div class="left">
+      <div class="left" v-if="dictList.length > 0">
         <el-tabs
           type="border-card"
           tab-position="left"
@@ -21,7 +21,7 @@
             :name="dict.id"
             :key="dict.id"
           >
-            <div class="dict-tab-pane-main">
+            <div class="dict-tab-pane-main" v-if="dictItemList.length > 0">
               <div
                 class="dict-item"
                 v-for="dictItem in dictItemList"
@@ -32,8 +32,20 @@
                 {{ dictItem.item_text }}
               </div>
             </div>
+            <div class="empty-wrapper" v-else>
+              <span class="empty-desc">暂无数据，请先去【我的数据】菜单添加数据吧。</span>
+              <div class="empty-options">
+                <el-button size="mini" type="primary" @click="handleAddData">去添加数据</el-button>
+              </div>
+            </div>
           </el-tab-pane>
         </el-tabs>
+      </div>
+      <div class="empty-wrapper" v-else>
+        <span class="empty-desc">暂无数据，请先去【我的数据】菜单添加数据吧。</span>
+              <div class="empty-options">
+                <el-button size="mini" type="primary" @click="handleAddData">去添加数据</el-button>
+              </div>
       </div>
     </div>
   </el-dialog>
@@ -121,6 +133,12 @@ export default {
       });
       this.visible = false;
     },
+    handleAddData(){
+      this.$router.push({
+                  name: "mydata",
+                  query: { t: Math.random() },
+                });
+    }
   },
 };
 </script>
@@ -129,6 +147,19 @@ export default {
 .dict-select-wrapper {
   ::v-deep .el-tabs__content {
     padding: 0;
+  }
+  .empty-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    .empty-desc{
+      
+    }
+    .empty-options{
+      margin-top: 20px;
+    }
   }
   .dict-tab-pane-main {
     .dict-item {

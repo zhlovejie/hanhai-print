@@ -57,7 +57,7 @@
     </el-tabs>
 
     <div class="btn-wrapper">
-      <el-button type="primary" @click="handlePrint">打印此页</el-button>
+      <el-button type="primary" @click="handlePrintCheck">打印此页</el-button>
     </div>
 
     <DictSelect ref="dictSelect" @select="handleDictSelect" />
@@ -149,18 +149,8 @@ export default {
   async mounted() {
     const that = this;
 
-    let isTrialEnd = await checkTrial()
-      .then((res) => res.result.end)
-      .catch((err) => {
-        console.log(err);
-      });
+    let isTrialEnd = await that.checkTrialStatus();
     if (+isTrialEnd === 1) {
-      that.$message.info(
-        `您的试用次数已经使用完了，请联系管理员延长试用或升级为正式客户！`
-      );
-      setTimeout(function () {
-        that.$router.push({ name: "dashboard" });
-      }, 5000);
       return;
     }
 
@@ -280,6 +270,16 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+
+    async handlePrintCheck() {
+      const that = this;
+      let isTrialEnd = await that.checkTrialStatus();
+      if (+isTrialEnd === 1) {
+        return;
+      }
+      that.handlePrint();
+    },
+
     handlePrint() {
       const that = this;
 
@@ -360,6 +360,35 @@ export default {
       input.target.val = output;
     },
     handleDateSelect({ input, output }) {},
+
+    async checkTrialStatus() {
+      const that = this;
+      let isTrialEnd = await checkTrial()
+        .then((res) => res.result.end)
+        .catch((err) => {
+          console.log(err);
+        });
+      if (+isTrialEnd === 1) {
+        that.$alert(
+          `您的试用次数已使用完，请联系管理员升级为正式客户！`,
+          "提示",
+          {
+            showClose: false,
+            confirmButtonText: "确定",
+            callback: (action) => {
+              if (action === "confirm") {
+                that.$router.push({
+                  name: "dashboard",
+                  query: { t: Math.random() },
+                });
+              }
+            },
+          }
+        );
+        return 1;
+      }
+      return 0;
+    },
   },
 };
 </script>

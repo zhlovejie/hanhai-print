@@ -1,5 +1,19 @@
 <template>
   <div class="app-container">
+    <div class="tips">
+      <el-alert
+        style="margin-bottom: 20px"
+        title="使用说明"
+        type="info"
+        show-icon
+      >
+        <div>
+          <p>举例说明：</p>
+          <p>1.点击【新增字典】输入 性别 点击保存后，在列表 操作栏 点击 【编辑子项】</p>
+          <p>2.点击【新增字典项】 输入 男 点击保存后关闭，一个字典数据就创建好了。</p>
+        </div>
+      </el-alert>
+    </div>
     <div class="search-wrapper">
       <el-form
         :inline="true"

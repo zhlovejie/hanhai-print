@@ -135,7 +135,8 @@ export default {
               this.$router.push({ path: this.redirect || "/" });
               this.loading = false;
             })
-            .catch(() => {
+            .catch((err) => {
+              this.$message.error(err.message);
               this.loading = false;
             });
         } else {
@@ -183,6 +184,11 @@ $cursor: #fff;
       //   box-shadow: 0 0 0px 1000px #3477ce inset !important;
       //   -webkit-text-fill-color: $cursor !important;
       // }
+
+      &:-webkit-autofill {
+        transition-delay: 5000s;
+        transition: color 5000s ease-out, background-color 5000s ease-out;
+      }
     }
   }
 

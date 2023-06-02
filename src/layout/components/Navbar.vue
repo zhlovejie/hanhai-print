@@ -10,10 +10,19 @@
 
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" />
-          <i class="el-icon-caret-bottom" />
+        <div class="avatar-container-inner">
+          <div class="user-wrapper">
+            <span>{{ name }}</span>
+          </div>
+          <div class="avatar-wrapper">
+            <img
+              :src="avatar + '?imageView2/1/w/80/h/80'"
+              class="user-avatar"
+            />
+            <i class="el-icon-caret-bottom" />
+          </div>
         </div>
+
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/account/index">
             <el-dropdown-item> 账号信息 </el-dropdown-item>
@@ -43,7 +52,7 @@ export default {
     ResetPassword,
   },
   computed: {
-    ...mapGetters(["sidebar", "avatar"]),
+    ...mapGetters(["sidebar", "avatar", "name"]),
   },
   methods: {
     toggleSideBar() {
@@ -115,6 +124,13 @@ export default {
     .avatar-container {
       margin-right: 30px;
 
+      .avatar-container-inner {
+        display: flex;
+        cursor: pointer;
+        .user-wrapper {
+          margin-right: 10px;
+        }
+      }
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
@@ -130,7 +146,7 @@ export default {
           cursor: pointer;
           position: absolute;
           right: -20px;
-          top: 25px;
+          top: 15px;
           font-size: 12px;
         }
       }
