@@ -9,8 +9,14 @@
       >
         <div>
           <p>举例说明：</p>
-          <p>1.点击【新增字典】输入 性别 点击保存后，在列表 操作栏 点击 【编辑子项】</p>
-          <p>2.点击【新增字典项】 输入 男 点击保存后关闭，一个字典数据就创建好了。</p>
+          <p>
+            1.点击【新增字典】输入 性别 点击保存后，在列表 操作栏 点击
+            【编辑子项】
+          </p>
+          <p>
+            2.点击【新增字典项】 输入 男
+            点击保存后关闭，一个字典数据就创建好了。
+          </p>
         </div>
       </el-alert>
     </div>
@@ -37,13 +43,25 @@
       </el-form>
     </div>
     <div class="options-wrapper">
-      <el-button type="primary" size="small" @click="handleAction('add', {})"
-        >新增字典</el-button
-      >
-      <el-button type="primary" size="small" @click="handleAction('import', {})"
-        >导入</el-button
-      >
-      <a href="#">下载字典模板</a>
+      <div style="display: flex">
+        <el-button type="primary" size="small" @click="handleAction('add', {})"
+          >新增字典</el-button
+        >
+
+        <FileUpload @ok="() => loadData()" style="margin-left: 10px" />
+
+        <a
+          :href="templateUrl"
+          target="_self"
+          style="
+            margin-left: 10px;
+            font-size: 12px;
+            line-height: 32px;
+            color: #409eff;
+          "
+          >下载字典模板</a
+        >
+      </div>
     </div>
     <div class="main-wrapper">
       <el-table
@@ -116,13 +134,22 @@ import DictAdd from "./modules/DictAdd.vue";
 
 import DictItemList from "./modules/DictItemList.vue";
 
+import FileUpload from "@/components/common/UploadFile.vue";
+
 export default {
   name: "my-data",
   components: {
     DictAdd,
     DictItemList,
+    FileUpload,
   },
   data() {
+    let templateUrl = `${
+      process.env.NODE_ENV === "production"
+        ? "http://81.68.204.177/hhprint/static/download/%E5%AD%97%E5%85%B8%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx"
+        : `${process.env.VUE_APP_BASE_API}/static/download/%E5%AD%97%E5%85%B8%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx`
+    }`;
+
     return {
       loading: false,
       searchParams: {},
@@ -137,6 +164,7 @@ export default {
       drawer: false,
       drawerDirection: "rtl",
       drawerTitle: "",
+      templateUrl,
     };
   },
   created() {
@@ -240,6 +268,7 @@ export default {
         that.$nextTick(() => {
           that.$refs.dictItemList.query(record);
         });
+      } else if (type === "import") {
       } else {
         that.$refs.refDictAdd.query(type, record);
       }

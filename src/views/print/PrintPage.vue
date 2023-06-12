@@ -202,9 +202,10 @@ export default {
     if (!LODOP) {
       let downloadUrl = `${
         process.env.NODE_ENV === "production"
-          ? "/hhprint/static/CLodop_Setup_for_Win32NT.zip"
-          : "/static/CLodop_Setup_for_Win32NT.zip"
+          ? "http://81.68.204.177/hhprint/static/download/CLodop_Setup_for_Win32NT.zip"
+          : `${process.env.VUE_APP_BASE_API}/static/download/CLodop_Setup_for_Win32NT.zip`
       }`;
+
       let html = `
         <div>
           <p>Web打印服务CLodop未安装启动，点击这里<a style="color:red;font-weight:700;" href='${downloadUrl}' target='_self' rel="external nofollow">下载执行安装</a>。</p>

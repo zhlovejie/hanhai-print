@@ -1,17 +1,33 @@
 <template>
-  <el-upload
+  <!-- <el-upload
     class="avatar-uploader"
     :action="actionUrl"
-    :show-file-list="false"
+    :show-file-list="true"
     :on-success="handleAvatarSuccess"
     :before-upload="beforeAvatarUpload"
   >
     <img v-if="imageUrl" :src="imageUrl" class="avatar" />
     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+  </el-upload> -->
+
+  <el-upload
+    class="upload-demo"
+    :headers="headers"
+    :action="actionUrl"
+    :on-change="handleChange"
+    :on-success="handleSuccess"
+    :before-upload="beforeUpload"
+    :file-list="fileList"
+  >
+    <el-tooltip content="只能上传xlsx/xls文件，且不超过5M" placement="top">
+      <el-button size="small" type="primary">导入字典</el-button>
+    </el-tooltip>
+    <!-- <div slot="tip" class="el-upload__tip">只能上传xlsx/xls文件，且不超过5M</div> -->
   </el-upload>
 </template>
 
 <script>
+import { getToken } from "@/utils/auth";
 export default {
   model: {
     prop: "value",
@@ -25,66 +41,59 @@ export default {
   },
   data() {
     return {
-      actionUrl: "/sys/common/upload",
+      actionUrl: `${process.env.VUE_APP_BASE_API}/sys/dict/import`,
       imageUrl: "",
+      fileList: [],
+      headers: {
+        "X-Access-Token": getToken(),
+      },
     };
   },
   watch: {
     value: {
-      handler(val) {
-        this.initFileList(val);
-      },
+      handler(val) {},
       //立刻执行handler
       immediate: true,
     },
   },
   methods: {
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      this.$emit("change", this.imageUrl);
+    handleChange() {
+      console.log(arguments);
     },
-    beforeAvatarUpload(file) {
-      const imagesTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
-      const isImg = imagesTypes.includes(file.type);
-      const isLt2M = file.size / 1024 / 1024 < 2;
+    handleSuccess(res) {
+      if(+res.code === 200){
+        this.$message.info('导入成功')
+        this.$emit('ok')
+      }else{
+        this.$message.error(res.message)
+      }
+      console.log(arguments);
+    },
+    beforeUpload(file) {
+      let fileTypes = [
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/vnd.ms-excel",
+      ];
 
-      if (!isImg) {
-        this.$message.error("上传头像图片只能是 JPEG,JPG,PNG,GIF 格式!");
+      const isFile = fileTypes.includes(file.type);
+      // const isFile2 = file.name.endsWith('.xlsx') || file.name.endsWith('.xls')
+      const isLt2M = file.size / 1024 / 1024 < 5;
+
+      if (!isFile) {
+        this.$message.error("上传文件只能是 XLSX,XLS 格式!");
+        return false;
       }
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$message.error("上传文件大小不能超过 5MB!");
+        return false;
       }
-      return isImg && isLt2M;
-    },
-    initFileList(val) {
-      this.imageUrl = val;
-      this.$emit("change", this.imageUrl);
+      return true;
     },
   },
 };
 </script>
 <style>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
+.upload-demo .el-upload-list{
+  display: none;
 }
 </style>
