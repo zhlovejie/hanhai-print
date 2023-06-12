@@ -200,9 +200,14 @@ export default {
 
     const LODOP = PrintInstance.getLodop();
     if (!LODOP) {
+      let downloadUrl = `${
+        process.env.NODE_ENV === "production"
+          ? "/hhprint/static/CLodop_Setup_for_Win32NT.zip"
+          : "/static/CLodop_Setup_for_Win32NT.zip"
+      }`;
       let html = `
         <div>
-          <p>Web打印服务CLodop未安装启动，点击这里<a style="color:red;font-weight:700;" href='/static/CLodop_Setup_for_Win32NT.zip' target='_self' rel="external nofollow">下载执行安装</a>。</p>
+          <p>Web打印服务CLodop未安装启动，点击这里<a style="color:red;font-weight:700;" href='${downloadUrl}' target='_self' rel="external nofollow">下载执行安装</a>。</p>
           <p>若此前已安装过，可<a href='CLodop.protocol:setup' target='_self' style="color:red;font-weight:700;">点这里直接再次启动</a></p>
           <p>成功后请刷新本页面或重启浏览器。 </p>
         </div>
