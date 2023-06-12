@@ -1,11 +1,5 @@
 <template>
   <div class="login-container">
-    <!-- <div class="title-container">
-      <h1 class="title">
-        <img :src="IconLogo" alt="" srcset="" style="width: 96px" />
-      </h1>
-    </div> -->
-
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -14,9 +8,16 @@
       auto-complete="on"
       label-position="left"
     >
-      <h2 class="sub-title">欢迎使用</h2>
+      <div class="title-container">
+        <h3 class="title">
+          <img :src="IconLogo" alt="" srcset="" />
+        </h3>
+      </div>
 
       <el-form-item prop="username">
+        <span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
         <el-input
           ref="username"
           v-model="loginForm.username"
@@ -26,11 +27,13 @@
           tabindex="1"
           auto-complete="on"
           :maxLength="50"
-          prefix-icon="el-icon-user"
         />
       </el-form-item>
 
       <el-form-item prop="password">
+        <span class="svg-container">
+          <svg-icon icon-class="password" />
+        </span>
         <el-input
           :key="passwordType"
           ref="password"
@@ -42,40 +45,44 @@
           auto-complete="on"
           :maxLength="50"
           @keyup.enter.native="handleLogin"
-          prefix-icon="el-icon-lock"
-          show-password
         />
+        <span class="show-pwd" @click="showPwd">
+          <svg-icon
+            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+          />
+        </span>
       </el-form-item>
 
       <el-form-item prop="code">
-        <el-col :span="11">
-          <el-input
-            ref="code"
-            v-model="loginForm.captchaText"
-            placeholder="验证码"
-            name="code"
-            type="text"
-            tabindex="3"
-            auto-complete="on"
-            :maxLength="6"
-            prefix-icon="el-icon-lock"
-          />
+        <span class="svg-container">
+          <svg-icon icon-class="password" />
+        </span>
+        
+        <!-- <el-col :span="11">
+          <el-form-item prop="date1">
+            <el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.date1" style="width: 100%;"></el-date-picker>
+          </el-form-item>
         </el-col>
-        <el-col class="line" :span="2"></el-col>
+        <el-col class="line" :span="2">-</el-col>
         <el-col :span="11">
-          <div
-            class="captcha-wrapper"
-            @click="handleCaptchaClick"
-            title="刷新验证码"
-          >
-            <img
-              :src="loginForm.captchaImage"
-              alt=""
-              style="width: 100%; height: auto"
-            />
-          </div>
-        </el-col>
+          <el-form-item prop="date2">
+            <el-time-picker placeholder="选择时间" v-model="ruleForm.date2" style="width: 100%;"></el-time-picker>
+          </el-form-item>
+        </el-col> -->
+
+
+        <el-input
+          ref="code"
+          v-model="loginForm.code"
+          placeholder="验证码"
+          name="code"
+          type="text"
+          tabindex="3"
+          auto-complete="on"
+          :maxLength="6"
+        />
       </el-form-item>
+
       <el-button
         :loading="loading"
         type="primary"
@@ -89,11 +96,6 @@
         <span> password: any</span>
       </div> -->
     </el-form>
-    <div class="footer-wrapper">
-      <div class="copyright">
-        Copyright © 2014-2023 徐州瀚海网络科技有限公司版权所有
-      </div>
-    </div>
   </div>
 </template>
 
@@ -101,7 +103,6 @@
 import { validUsername } from "@/utils/validate";
 import { captchaRandom, captchaValidate } from "@/api/user";
 import IconLogo from "@/assets/logo/logo.png";
-
 export default {
   name: "Login",
   data() {
@@ -123,10 +124,9 @@ export default {
     };
 
     const validateCode = (rule, value, callback) => {
-      let _value = this.loginForm.captchaText;
-      if (!_value) {
+      if (!value) {
         callback(new Error("请输入验证码"));
-      } else if (_value.length < 6) {
+      } else if (value.length < 6) {
         callback(new Error("验证码不少于6位"));
       } else {
         callback();
@@ -137,9 +137,6 @@ export default {
       loginForm: {
         username: "",
         password: "",
-        captchaImage: "",
-        captchaText: "",
-        captchaSalt: "",
       },
       loginRules: {
         username: [
@@ -159,7 +156,6 @@ export default {
     $route: {
       handler: function (route) {
         this.redirect = route.query && route.query.redirect;
-        this.refreshCaptcha();
       },
       immediate: true,
     },
@@ -176,31 +172,18 @@ export default {
       });
     },
     handleLogin() {
-      const that = this;
-      that.$refs.loginForm.validate(async (valid) => {
+      this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          debugger;
-          let { captchaText, captchaSalt } = that.loginForm;
-          let isok = await captchaValidate({
-            captchaText,
-            captchaSalt,
-          }).then((res) => res.result);
-
-          if (!isok) {
-            that.$message.error("验证码不正确");
-            return;
-          }
-
-          that.loading = true;
-          that.$store
-            .dispatch("user/login", that.loginForm)
+          this.loading = true;
+          this.$store
+            .dispatch("user/login", this.loginForm)
             .then(() => {
-              that.$router.push({ path: that.redirect || "/" });
-              that.loading = false;
+              this.$router.push({ path: this.redirect || "/" });
+              this.loading = false;
             })
             .catch((err) => {
-              that.$message.error(err.message);
-              that.loading = false;
+              this.$message.error(err.message);
+              this.loading = false;
             });
         } else {
           console.log("error submit!!");
@@ -208,90 +191,127 @@ export default {
         }
       });
     },
-
-    refreshCaptcha() {
-      const that = this;
-      captchaRandom().then((res) => {
-        if (+res.code === 200) {
-          let { base64, salt } = res.result;
-          that.loginForm = {
-            ...that.loginForm,
-            captchaImage: `data:image/png;base64,${base64}`,
-            captchaSalt: salt,
-          };
-        }
-      });
-    },
-    handleCaptchaClick() {
-      this.refreshCaptcha();
-    },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+/* 修复input 背景不协调 和光标变色 */
+/* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
+
 $bg: #283443;
+$light_gray: #fff;
+$cursor: #fff;
+
+@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
+  .login-container .el-input input {
+    color: $cursor;
+  }
+}
+
+/* reset element-ui css */
+.login-container {
+  .el-input {
+    display: inline-block;
+    height: 47px;
+    width: 85%;
+
+    input {
+      background: transparent;
+      border: 0px;
+      -webkit-appearance: none;
+      border-radius: 0px;
+      padding: 12px 5px 12px 15px;
+      color: $light_gray;
+      height: 47px;
+      caret-color: $cursor;
+
+      // &:-webkit-autofill {
+      //   box-shadow: 0 0 0px 1000px #3477ce inset !important;
+      //   -webkit-text-fill-color: $cursor !important;
+      // }
+
+      &:-webkit-autofill {
+        transition-delay: 5000s;
+        transition: color 5000s ease-out, background-color 5000s ease-out;
+      }
+    }
+  }
+
+  .el-form-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: #454545;
+  }
+}
+</style>
+
+<style lang="scss" scoped>
+$bg: #2d3a4b;
+$dark_gray: #889aa4;
+$light_gray: #eee;
+
 .login-container {
   min-height: 100%;
   width: 100%;
-  min-width: 1200px;
   // background-color: $bg;
-  // background: #fff linear-gradient(bottom, #2d3a4b, #3477ce);
-  background: $bg url("../../assets/img/bg.jpg") no-repeat center center;
-  background-size: 100% 100%;
+  background: #fff linear-gradient(bottom, #2d3a4b, #3477ce);
   overflow: hidden;
 
   .login-form {
+    position: relative;
     width: 520px;
-    position: absolute;
-    top: 135px;
-    left: 50%;
-    margin-left: -260px;
-
     max-width: 100%;
-    padding: 40px 40px 30px;
-    border-radius: 10px;
+    padding: 160px 35px 0;
+    margin: 0 auto;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.3);
+  }
 
-    .sub-title {
-      text-align: center;
-      font-size: 28px;
-      line-height: 28px;
-      color: #fff;
-      font-weight: 400;
-    }
+  .tips {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 10px;
 
-    .captcha-wrapper {
-      height: 40px;
-      position: relative;
-      top: -20px;
-      left: 40px;
-      cursor: pointer;
+    span {
+      &:first-of-type {
+        margin-right: 16px;
+      }
     }
+  }
+
+  .svg-container {
+    padding: 6px 5px 6px 15px;
+    color: $dark_gray;
+    vertical-align: middle;
+    width: 30px;
+    display: inline-block;
   }
 
   .title-container {
-    position: absolute;
-    top: 30px;
-    left: 50px;
-    width: 96px;
-    height: auto;
-    h3 {
+    position: relative;
+
+    .title {
+      font-size: 26px;
+      color: $light_gray;
+      margin: 0px auto 40px auto;
       text-align: center;
+      font-weight: bold;
+      img {
+        width: 50%;
+        height: auto;
+      }
     }
   }
 
-  .footer-wrapper {
+  .show-pwd {
     position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.5);
+    right: 10px;
+    top: 7px;
+    font-size: 16px;
+    color: $dark_gray;
+    cursor: pointer;
+    user-select: none;
   }
 }
 </style>

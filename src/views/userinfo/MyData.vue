@@ -40,6 +40,10 @@
       <el-button type="primary" size="small" @click="handleAction('add', {})"
         >新增字典</el-button
       >
+      <el-button type="primary" size="small" @click="handleAction('import', {})"
+        >导入</el-button
+      >
+      <a href="#">下载字典模板</a>
     </div>
     <div class="main-wrapper">
       <el-table

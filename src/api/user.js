@@ -42,7 +42,7 @@ export function userPageList(params) {
   return request({
     url: "/sys/user/pagelist",
     method: "get",
-    params
+    params,
   });
 }
 
@@ -50,16 +50,15 @@ export function userResetPassword(data) {
   return request({
     url: "/sys/user/resetpassword",
     method: "post",
-    data
+    data,
   });
 }
-
 
 export function udpateTrialUsed(data) {
   return request({
     url: "/sys/user/udpateTrialUsed",
     method: "post",
-    data
+    data,
   });
 }
 
@@ -67,6 +66,32 @@ export function checkTrial(data) {
   return request({
     url: "/sys/user/checkTrial",
     method: "post",
-    data
+    data,
+  });
+}
+
+/**
+ * 获取验证码
+ * @param {*} data
+ * @returns
+ */
+export function captchaRandom(data) {
+  return request({
+    url: "/sys/user/captchaRandom",
+    method: "post",
+    data,
+  });
+}
+
+/**
+ * 验证码校验
+ * @param {*} data
+ * @returns
+ */
+export function captchaValidate(data) {
+  return request({
+    url: "/sys/user/captchaValidate",
+    method: "post",
+    data,
   });
 }
