@@ -38,11 +38,15 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { username, password } = userInfo;
+    const { username, password, captchaText, captchaSalt } = userInfo;
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password })
+      login({
+        username: username.trim(),
+        password: password,
+        captchaText,
+        captchaSalt,
+      })
         .then((response) => {
-          debugger
           const { result } = response;
           commit("SET_TOKEN", result.token);
           setToken(result.token);

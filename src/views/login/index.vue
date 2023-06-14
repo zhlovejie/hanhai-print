@@ -67,13 +67,8 @@
             class="captcha-wrapper"
             @click="handleCaptchaClick"
             title="刷新验证码"
-          >
-            <img
-              :src="loginForm.captchaImage"
-              alt=""
-              style="width: 100%; height: auto"
-            />
-          </div>
+            v-html="loginForm.captchaImage"
+          ></div>
         </el-col>
       </el-form-item>
       <el-button
@@ -126,8 +121,8 @@ export default {
       let _value = this.loginForm.captchaText;
       if (!_value) {
         callback(new Error("请输入验证码"));
-      } else if (_value.length < 6) {
-        callback(new Error("验证码不少于6位"));
+      } else if (_value.length < 4) {
+        callback(new Error("验证码不少于4位"));
       } else {
         callback();
       }
@@ -158,13 +153,34 @@ export default {
   watch: {
     $route: {
       handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
-        this.refreshCaptcha();
+        const that = this;
+        that.redirect = route.query && route.query.redirect;
+        that.refreshCaptcha();
       },
       immediate: true,
     },
   },
+  mounted() {
+    window.addEventListener("keydown", this.handleEnterKey, true);
+  },
   methods: {
+    handleEnterKey(event) {
+      const that = this;
+      if (event.defaultPrevented) {
+        return; // 如果已取消默认操作，则不应执行任何操作
+      }
+      var handled = false;
+      if (event.key !== undefined && event.key === "Enter") {
+        handled = true;
+        that.handleLogin();
+      } else if (event.keyCode !== undefined && event.keyCode === 13) {
+        handled = true;
+        that.handleLogin();
+      }
+      if (handled) {
+        event.preventDefault();
+      }
+    },
     showPwd() {
       if (this.passwordType === "password") {
         this.passwordType = "";
@@ -179,7 +195,6 @@ export default {
       const that = this;
       that.$refs.loginForm.validate(async (valid) => {
         if (valid) {
-          debugger;
           let { captchaText, captchaSalt } = that.loginForm;
           let isok = await captchaValidate({
             captchaText,
@@ -216,7 +231,7 @@ export default {
           let { base64, salt } = res.result;
           that.loginForm = {
             ...that.loginForm,
-            captchaImage: `data:image/png;base64,${base64}`,
+            captchaImage: base64,
             captchaSalt: salt,
           };
         }
@@ -225,6 +240,9 @@ export default {
     handleCaptchaClick() {
       this.refreshCaptcha();
     },
+  },
+  beforeDestroy() {
+    window.removeEventListener("keydown", this.handleEnterKey, true);
   },
 };
 </script>
@@ -268,6 +286,10 @@ $bg: #283443;
       top: -20px;
       left: 40px;
       cursor: pointer;
+      ::v-deep svg {
+        width: 100%;
+        height: auto;
+      }
     }
   }
 
