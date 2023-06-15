@@ -1,11 +1,5 @@
 <template>
-  <div class="login-container">
-    <!-- <div class="title-container">
-      <h1 class="title">
-        <img :src="IconLogo" alt="" srcset="" style="width: 96px" />
-      </h1>
-    </div> -->
-
+  <div class="login-container" ref="loginContainer">
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -93,7 +87,6 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
 import { captchaRandom, captchaValidate } from "@/api/user";
 import IconLogo from "@/assets/logo/logo.png";
 
@@ -161,7 +154,19 @@ export default {
     },
   },
   mounted() {
-    window.addEventListener("keydown", this.handleEnterKey, true);
+    const that = this;
+    window.addEventListener("keydown", that.handleEnterKey, true);
+
+    that.$nextTick(() => {
+      const pattern = trianglify({
+        width: window.innerWidth,
+        height: window.innerHeight,
+        cellSize:parseInt(window.innerWidth / 20)
+      });
+      let bgCanvas = pattern.toCanvas();
+      bgCanvas.classList.add("login-container-bg-wrapper");
+      that.$refs.loginContainer.appendChild(bgCanvas);
+    });
   },
   methods: {
     handleEnterKey(event) {
@@ -250,15 +255,10 @@ export default {
 <style lang="scss" scoped>
 $bg: #283443;
 .login-container {
+  position: relative;
   min-height: 100%;
   width: 100%;
-  min-width: 1200px;
-  // background-color: $bg;
-  // background: #fff linear-gradient(bottom, #2d3a4b, #3477ce);
-  background: $bg url("../../assets/img/bg.jpg") no-repeat center center;
-  background-size: 100% 100%;
-  overflow: hidden;
-
+  min-width: 1000px;
   .login-form {
     width: 520px;
     position: absolute;
@@ -270,7 +270,7 @@ $bg: #283443;
     padding: 40px 40px 30px;
     border-radius: 10px;
     overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.4);
 
     .sub-title {
       text-align: center;
@@ -278,6 +278,7 @@ $bg: #283443;
       line-height: 28px;
       color: #fff;
       font-weight: 400;
+      letter-spacing: 5px;
     }
 
     .captcha-wrapper {
@@ -309,11 +310,23 @@ $bg: #283443;
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    height: 100px;
-    line-height: 100px;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 60px;
+    line-height: 60px;
+    font-size: 14px;
     text-align: center;
     color: rgba(255, 255, 255, 0.5);
+  }
+
+  ::v-deep .login-container-bg-wrapper{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
   }
 }
 </style>
