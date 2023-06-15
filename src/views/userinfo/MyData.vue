@@ -144,12 +144,7 @@ export default {
     FileUpload,
   },
   data() {
-    let templateUrl = `${
-      process.env.NODE_ENV === "production"
-        ? "http://81.68.204.177/hhprint/static/download/%E5%AD%97%E5%85%B8%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx"
-        : `${process.env.VUE_APP_BASE_API}/static/download/%E5%AD%97%E5%85%B8%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx`
-    }`;
-
+    let templateUrl = `${process.env.VUE_APP_BASE_API}/static/download/%E5%AD%97%E5%85%B8%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx`;
     return {
       loading: false,
       searchParams: {},

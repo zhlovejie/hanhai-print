@@ -200,11 +200,7 @@ export default {
 
     const LODOP = PrintInstance.getLodop();
     if (!LODOP) {
-      let downloadUrl = `${
-        process.env.NODE_ENV === "production"
-          ? "http://81.68.204.177/hhprint/static/download/CLodop_Setup_for_Win32NT.zip"
-          : `${process.env.VUE_APP_BASE_API}/static/download/CLodop_Setup_for_Win32NT.zip`
-      }`;
+      let downloadUrl = `${process.env.VUE_APP_BASE_API}/static/download/CLodop_Setup_for_Win32NT.zip`;
 
       let html = `
         <div>
