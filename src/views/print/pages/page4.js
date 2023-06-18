@@ -1,5 +1,7 @@
 export default {
-  title: "安全培训合格证书-版面4",
+  title: "版面4",
+  name:'page4',
+  bgimg:'http://81.68.204.177:9999/static/download/page4.png',
   components: [
     {
       top: "139",

@@ -1,10 +1,12 @@
 export default {
-  title: "安全培训合格证书-版面2",
+  title: "版面2",
+  name:'page2',
+  bgimg:'http://81.68.204.177:9999/static/download/page2.png',
   components: [
     {
       top: "119",
       left: "134",
-      w: "34",
+      w: "38",
       h: "20",
       remark: "年",
       val: "",
@@ -29,7 +31,7 @@ export default {
     {
       top: "119",
       left: "270",
-      w: "34",
+      w: "38",
       h: "20",
       remark: "年",
       val: "",
@@ -423,7 +425,7 @@ export default {
     {
       top: "119",
       left: "579",
-      w: "34",
+      w: "38",
       h: "20",
       remark: "年",
       val: "",
@@ -448,7 +450,7 @@ export default {
     {
       top: "119",
       left: "715",
-      w: "34",
+      w: "38",
       h: "20",
       remark: "年",
       val: "",
@@ -760,7 +762,7 @@ export default {
     {
       top: "565",
       left: "696",
-      w: "34",
+      w: "38",
       h: "20",
       remark: "年",
       val: "",

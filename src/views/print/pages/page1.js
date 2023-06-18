@@ -1,8 +1,10 @@
 export default {
-  title: "安全培训合格证书-版面1",
+  title: "版面1",
+  name: "page1",
+  bgimg: "http://81.68.204.177:9999/static/download/page1.png",
   components: [
     {
-      top: "400",
+      top: "408",
       left: "152",
       w: "194",
       h: "20",
@@ -10,106 +12,133 @@ export default {
       val: "",
       type: "date-val",
       ext: {
-        // cmd:[' LODOP.SET_PRINT_STYLEA(0,"FontSize",7); ']
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
       },
     },
     {
-      top: "453",
+      top: "454",
       left: "134",
-      w: "30",
+      w: "38",
       h: "20",
       remark: "年份",
       val: "",
       type: "date",
-      //设置关联组件，统一填充
-      relation: [
-        {
-          top: "453",
-          left: "134",
-          w: "30",
-          h: "20",
-          type: "year",
-        },
-        {
-          top: "453",
-          left: "184",
-          w: "20",
-          h: "20",
-          type: "month",
-        },
-        {
-          top: "453",
-          left: "225",
-          w: "20",
-          h: "20",
-          type: "day",
-        },
-      ],
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "453",
+      top: "454",
       left: "184",
-      w: "20",
+      w: "25",
       h: "20",
       remark: "月",
       val: "",
       type: "month",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "453",
+      top: "454",
       left: "225",
-      w: "20",
+      w: "25",
       h: "20",
       remark: "日",
       val: "",
       type: "day",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
 
     {
-      top: "453",
+      top: "454",
       left: "277",
-      w: "30",
+      w: "38",
       h: "20",
       remark: "年",
       val: "",
       type: "year",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "453",
+      top: "454",
       left: "324",
-      w: "20",
+      w: "25",
       h: "20",
       remark: "月",
       val: "",
       type: "month",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "453",
+      top: "454",
       left: "361",
-      w: "20",
+      w: "25",
       h: "20",
       remark: "日",
       val: "",
       type: "day",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
 
     {
       top: "500",
       left: "204",
-      w: "20",
+      w: "25",
       h: "20",
       remark: "月",
       val: "",
       type: "month",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
       top: "500",
       left: "241",
-      w: "20",
+      w: "25",
       h: "20",
       remark: "日",
       val: "",
       type: "day",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
 
     {
@@ -121,72 +150,124 @@ export default {
       val: "",
       ext: {
         //居中
-        cmd: [' LODOP.SET_PRINT_STYLEA(0,"Alignment",2); '],
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"Alignment",2); ',
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
       },
     },
     {
-      top: "127",
+      top: "130",
       left: "614",
       w: "220",
       h: "20",
       remark: "单位",
       val: "",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "173",
+      top: "174",
       left: "614",
       w: "220",
       h: "20",
       remark: "姓名",
       val: "",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "221",
+      top: "222",
       left: "614",
       w: "220",
       h: "20",
       remark: "性别",
       val: "",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "271",
+      top: "272",
       left: "614",
       w: "220",
       h: "20",
       remark: "职称",
       val: "",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "319",
+      top: "321",
       left: "614",
       w: "220",
       h: "20",
       remark: "文化程度",
       val: "",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "368",
+      top: "370",
       left: "614",
       w: "220",
       h: "20",
       remark: "身份证号",
       val: "",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "415",
+      top: "417",
       left: "614",
       w: "220",
       h: "20",
       remark: "单位类型",
       val: "",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
     {
-      top: "464",
+      top: "467",
       left: "614",
       w: "220",
       h: "20",
       remark: "资格类型",
       val: "",
+      ext: {
+        cmd: [
+          'LODOP.SET_PRINT_STYLEA(0,"FontName","黑体");',
+          'LODOP.SET_PRINT_STYLEA(0,"FontSize",10);',
+        ],
+      },
     },
   ],
 };
